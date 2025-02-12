@@ -9,9 +9,12 @@ import {
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HttpPage from "./pages/HttpPage";
-import { ServerPage } from "./pages/ServerPage";
 import { ConfigProvider } from "./api/components/ConfigProvider";
 import { useEffect, useState } from "react";
+import { LocationPage } from "./pages/LocationPage";
+import { SSLPage } from "./pages/SSLPage";
+import { ServerLayout } from "./pages/ServerPage";
+import { ServerConfigPage } from "./pages/ServerConfigPage";
 
 export type ModuleItem = {
   key: number;
@@ -21,7 +24,6 @@ export type ModuleItem = {
 
 const modules: ModuleItem[] = [
   { key: 1, label: "HTTP", route: "/http" },
-  { key: 2, label: "Server", route: "/server/0" },
 ];
 
 type ModuleKey = (typeof modules)[number]["key"];
@@ -89,7 +91,17 @@ const App = () => {
           <Route element={<Layout />}>
             <Route path="/" element={<Navigate to="/http" replace />} />
             <Route path="/http" element={<HttpPage />} />
-            <Route path="/server/:serverIndex" element={<ServerPage />} />
+            <Route element={<ServerLayout />}>
+              <Route
+                path="/server/:serverIndex"
+                element={<ServerConfigPage />}
+              />
+              <Route
+                path="/server/:serverIndex/location"
+                element={<LocationPage />}
+              />
+              <Route path="/server/:serverIndex/ssl" element={<SSLPage />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
