@@ -16,15 +16,15 @@ import { SSLPage } from "./pages/SSLPage";
 import { ServerLayout } from "./pages/ServerPage";
 import { ServerConfigPage } from "./pages/ServerConfigPage";
 
+export const BASE_URL_PATH: string = "/web_config";
+
 export type ModuleItem = {
   key: number;
   label: string;
   route: string;
 };
 
-const modules: ModuleItem[] = [
-  { key: 1, label: "HTTP", route: "/http" },
-];
+const modules: ModuleItem[] = [{ key: 1, label: "HTTP", route: "/http" }];
 
 type ModuleKey = (typeof modules)[number]["key"];
 
@@ -89,18 +89,24 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Navigate to="/http" replace />} />
-            <Route path="/http" element={<HttpPage />} />
+            <Route
+              path={BASE_URL_PATH}
+              element={<Navigate to={`${BASE_URL_PATH}/http`} replace />}
+            />
+            <Route path={`${BASE_URL_PATH}/http`} element={<HttpPage />} />
             <Route element={<ServerLayout />}>
               <Route
-                path="/server/:serverIndex"
+                path={`${BASE_URL_PATH}/server/:serverIndex`}
                 element={<ServerConfigPage />}
               />
               <Route
-                path="/server/:serverIndex/location"
+                path={`${BASE_URL_PATH}/server/:serverIndex/location`}
                 element={<LocationPage />}
               />
-              <Route path="/server/:serverIndex/ssl" element={<SSLPage />} />
+              <Route
+                path={`${BASE_URL_PATH}/server/:serverIndex/ssl`}
+                element={<SSLPage />}
+              />
             </Route>
           </Route>
         </Routes>

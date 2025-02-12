@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosError, AxiosResponse } from "axios";
 import { ConfigBlock } from "./types";
 import { parseRawConfig, RawConfig } from "./parser";
+import { BASE_URL_PATH } from "../App";
 
 interface UpdateConfigRequest {
   path: string;
@@ -35,13 +36,12 @@ export class ConfigAPIClient {
   private readonly minRequestInterval: number = 1000; // 每次請求間至少間隔1秒
 
   constructor(
-    baseURL: string = "https://xiuzhe.xyz/web_config",
     maxRetries: number = 3,
     timeout: number = 15000,
     retryDelay: number = 1000, // 固定重試時間1秒
   ) {
     this.axiosInstance = axios.create({
-      baseURL,
+      baseURL: BASE_URL_PATH,
       timeout,
       validateStatus: (status) => status >= 200 && status < 300,
     });
