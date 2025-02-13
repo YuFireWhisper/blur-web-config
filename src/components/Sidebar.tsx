@@ -7,6 +7,7 @@ import {
   MapPin,
   Shield,
 } from "lucide-react";
+import { BASE_URL_PATH } from "../App";
 
 type LanguageContent = {
   server: string;
@@ -49,19 +50,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       id: "server",
       label: texts.server,
-      path: `/server/${serverIndex}`,
+      path: BASE_URL_PATH + `/server/${serverIndex}`,
       icon: Settings,
     },
     {
       id: "location",
       label: texts.location,
-      path: `/server/${serverIndex}/location`,
+      path: BASE_URL_PATH + `/server/${serverIndex}/location`,
       icon: MapPin,
     },
     {
       id: "ssl",
       label: texts.ssl,
-      path: `/server/${serverIndex}/ssl`,
+      path: BASE_URL_PATH + `/server/${serverIndex}/ssl`,
       icon: Shield,
     },
   ];
