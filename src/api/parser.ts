@@ -36,12 +36,13 @@ class PathBuilder {
     parentPath: string,
     key: string,
     index: number,
-    unique: boolean
+    unique: boolean,
   ): string {
-    return unique ? `${parentPath}/${key}` : `${parentPath}/${key}/${index}`;
+    const base =
+      parentPath === "" ? `/${key}` : `${parentPath}/children/${key}`;
+    return unique ? base : `${base}/${index}`;
   }
 }
-
 
 class ParamParser {
   static parse(rawParam: RawParam, parentPath: string): Param {
@@ -64,7 +65,12 @@ class ConfigElementParser {
     key: string,
     index: number,
   ): ConfigItem {
-    const itemPath = PathBuilder.buildElementPath(parentPath, key, index, rawItem.unique);
+    const itemPath = PathBuilder.buildElementPath(
+      parentPath,
+      key,
+      index,
+      rawItem.unique,
+    );
     return {
       path: itemPath,
       display_name: rawItem.display_name,
@@ -92,11 +98,11 @@ class ConfigElementParser {
         ParamParser.parse(param, blockPath),
       ),
       configItems: [],
-      childrenBlocks: {},
+      children: {},
     };
 
     if (rawBlock.children) {
-      this.parseChildren(rawBlock.children, block, `${blockPath}/children`);
+      this.parseChildren(rawBlock.children, block, blockPath);
     }
 
     return block;
@@ -128,10 +134,10 @@ class ConfigElementParser {
     index: number,
   ): void {
     const childBlock = this.parseBlock(child, parentPath, childKey, index);
-    if (!parentBlock.childrenBlocks[childKey]) {
-      parentBlock.childrenBlocks[childKey] = [];
+    if (!parentBlock.children[childKey]) {
+      parentBlock.children[childKey] = [];
     }
-    parentBlock.childrenBlocks[childKey].push(childBlock);
+    parentBlock.children[childKey].push(childBlock);
   }
 }
 
@@ -143,7 +149,7 @@ class RootConfigParser {
       desc: { "zh-tw": "" },
       params: [],
       configItems: [],
-      childrenBlocks: {},
+      children: {},
     };
 
     Object.entries(rawConfig).forEach(([key, rawElement]) => {
@@ -156,6 +162,8 @@ class RootConfigParser {
       }
     });
 
+    console.log(rootBlock);
+
     return rootBlock;
   }
 
@@ -165,10 +173,10 @@ class RootConfigParser {
     key: string,
   ): void {
     const block = ConfigElementParser.parseBlock(rawElement, "", key, 0);
-    if (!rootBlock.childrenBlocks[key]) {
-      rootBlock.childrenBlocks[key] = [];
+    if (!rootBlock.children[key]) {
+      rootBlock.children[key] = [];
     }
-    rootBlock.childrenBlocks[key].push(block);
+    rootBlock.children[key].push(block);
   }
 }
 

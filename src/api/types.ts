@@ -27,7 +27,7 @@ export interface ConfigBlock {
   desc: LocalizedText;
   params: Param[];
   configItems: ConfigItem[];
-  childrenBlocks: Record<string, ConfigBlock[]>; // 每個 key 可有多個區塊
+  children: Record<string, ConfigBlock[]>;
 }
 
 export const ConfigContext = createContext<ConfigContextValue | null>(null);

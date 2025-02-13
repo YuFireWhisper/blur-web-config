@@ -9,7 +9,7 @@ import { Alert, Button, CircularProgress } from "@heroui/react";
 export const SSLPage: React.FC = () => {
   const { serverIndex } = useParams();
   const { value, isLoading, error } = useConfigValue<ConfigBlock>(
-    `childrenBlocks.http.0.childrenBlocks.server.${serverIndex}.childrenBlocks.ssl.0`,
+    `/http/children/server/${serverIndex}/children/ssl/0`,
   );
   const { updateConfig } = useConfigApi();
   const [editedValues, setEditedValues] = useState<Record<string, string>>({});
@@ -56,7 +56,7 @@ export const SSLPage: React.FC = () => {
     );
   }
 
-  if (!value?.configItems) {
+  if (!value) {
     return (
       <div className="p-4">
         <Alert

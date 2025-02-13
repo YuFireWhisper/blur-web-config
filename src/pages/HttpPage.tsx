@@ -1,50 +1,7 @@
-import { Alert, CircularProgress } from "@heroui/react";
-import { useConfigValue } from "../api/hooks/useConfigValue";
-import { ConfigBlock } from "../api/types";
 import ServerSelector from "../components/ServerSelector";
 import { motion } from "framer-motion";
 
 const HttpPage = () => {
-  const { value, isLoading, error } = useConfigValue<ConfigBlock>(
-    "childrenBlocks.http.0.childrenBlocks.server",
-  );
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <CircularProgress label="加載中..." size="lg" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="p-8 min-h-screen bg-gradient-to-br from-red-50 to-orange-50">
-        <Alert
-          description={error.message}
-          title="Error"
-          color="danger"
-          radius="lg"
-          className="shadow-lg backdrop-blur bg-white/90"
-        />
-      </div>
-    );
-  }
-
-  if (!value) {
-    return (
-      <div className="p-8 min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50">
-        <Alert
-          description="No location configurations found"
-          title="No data"
-          color="warning"
-          radius="lg"
-          className="shadow-lg backdrop-blur bg-white/90"
-        />
-      </div>
-    );
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0 }}

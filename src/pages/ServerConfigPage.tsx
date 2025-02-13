@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ConfigBlock } from "../api/types";
 import { useConfigValue } from "../api/hooks/useConfigValue";
 import { useConfigApi } from "../api/hooks/useConfigApi";
@@ -21,7 +21,7 @@ const getInitialValues = (server: ConfigBlock): Record<string, string> => {
 
 export const ServerConfigPage = () => {
   const { value, isLoading, error } = useConfigValue<ConfigBlock[]>(
-    "childrenBlocks.http.0.childrenBlocks.server",
+    "/http/children/server",
   );
   const { serverIndex } = useParams();
   const { updateConfig } = useConfigApi();
@@ -29,15 +29,17 @@ export const ServerConfigPage = () => {
   const [editedValues, setEditedValues] = useState<Record<string, string>>({});
   const [savedValues, setSavedValues] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
+  const initialized = useRef(false);
 
   useEffect(() => {
-    if (!isLoading && !error && value) {
+    if (!initialized.current && !isLoading && !error && value) {
       const index = serverIndex ? parseInt(serverIndex) : -1;
       const server = value[index];
       if (server) {
         const initial = getInitialValues(server);
         setEditedValues(initial);
         setSavedValues(initial);
+        initialized.current = true;
       }
     }
   }, [isLoading, error, value, serverIndex]);
