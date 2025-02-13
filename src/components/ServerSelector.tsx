@@ -5,6 +5,7 @@ import { useConfigValue } from "../api/hooks/useConfigValue";
 import { ConfigBlock } from "../api/types";
 import { getDisplayName } from "./utils/getDisplayName";
 import { motion } from "framer-motion";
+import { BASE_URL_PATH } from "../App";
 
 export type ServerItem = {
   index: number;
@@ -80,7 +81,7 @@ const ServerSelector = () => {
             transition={{ duration: 0.5, delay: 0.1 * idx }}
           >
             <Card
-              onPress={() => navigate(`/server/${server.index}`)}
+              onPress={() => navigate(BASE_URL_PATH + `/server/${server.index}`)}
               className={[
                 "group relative overflow-hidden bg-white/80 backdrop-blur",
                 "transition-all duration-300 hover:shadow-xl hover:-translate-y-1",
