@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import ModuleSelector, { ModuleItem } from "./ModuleSelector";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL_PATH } from "../App";
 
 interface NavbarProps {
   modules: ModuleItem[];
@@ -20,7 +21,7 @@ const Navbar = ({ modules, onSelect, getSelectedModule }: NavbarProps) => {
             "cursor-pointer hover:text-gray-300 transition-colors",
             "ml-[3vw]",
           ].join(" ")}
-          onClick={() => navigate("/")}
+          onClick={() => navigate(BASE_URL_PATH)}
         >
           Blur
         </div>
