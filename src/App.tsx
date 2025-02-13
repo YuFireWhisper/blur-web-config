@@ -24,7 +24,9 @@ export type ModuleItem = {
   route: string;
 };
 
-const modules: ModuleItem[] = [{ key: 1, label: "HTTP", route: "/http" }];
+const modules: ModuleItem[] = [
+  { key: 1, label: "HTTP", route: BASE_URL_PATH + "/http" },
+];
 
 type ModuleKey = (typeof modules)[number]["key"];
 
