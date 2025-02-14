@@ -73,15 +73,22 @@ export const CardContextMenu: React.FC<CardContextMenuProps> = ({
 };
 
 interface AddBlockCardProps {
+  className?: string;
   onClick: () => void;
 }
 
-export const AddBlockCard: React.FC<AddBlockCardProps> = ({ onClick }) => (
+export const AddBlockCard: React.FC<AddBlockCardProps> = ({
+  onClick,
+  className,
+}) => (
   <Card
     onPress={onClick}
-    className="group relative overflow-hidden bg-white/80 backdrop-blur cursor-pointer
-      transition-all duration-300 hover:shadow-xl hover:-translate-y-1
-      min-w-[15vw] items-center justify-center border-2 border-dashed border-gray-300"
+    className={[
+      "group relative overflow-hidden bg-white/80 backdrop-blur cursor-pointer\
+      transition-all duration-300 hover:shadow-xl hover:-translate-y-1\
+      min-w-[15vw] items-center justify-center border-2 border-dashed border-gray-300",
+      className,
+    ].join(" ")}
     isPressable
     isBlurred
     isHoverable
