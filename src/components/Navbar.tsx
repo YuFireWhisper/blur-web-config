@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import ModuleSelector, { ModuleItem } from "./ModuleSelector";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL_PATH } from "../App";
+import { GlobalConfigModal } from "./GlobalConfigMadal";
 
 interface NavbarProps {
   modules: ModuleItem[];
@@ -25,11 +26,14 @@ const Navbar = ({ modules, onSelect, getSelectedModule }: NavbarProps) => {
         >
           Blur
         </div>
-        <ModuleSelector
-          modules={modules}
-          onSelect={onSelect}
-          getSelectedModule={getSelectedModule}
-        />
+        <div className="flex items-center gap-3 mr-[2vw]">
+          <ModuleSelector
+            modules={modules}
+            onSelect={onSelect}
+            getSelectedModule={getSelectedModule}
+          />
+          <GlobalConfigModal />
+        </div>
       </div>
     </nav>
   );

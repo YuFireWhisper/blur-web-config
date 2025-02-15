@@ -177,13 +177,6 @@ class RootConfigParser {
           0,
         );
         rootBlock.configItems.push(globalItem);
-
-        if (rawElement.params && rawElement.params.length > 0) {
-          const globalParams = rawElement.params.map((param) =>
-            ParamParser.parse(param, ""),
-          );
-          rootBlock.params.push(...globalParams);
-        }
       }
     });
 

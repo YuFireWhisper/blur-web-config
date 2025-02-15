@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { ConfigContextValue } from "./components/ConfigProvider";
 
 export type LocalizedText = Record<string, string>; // 格式: { "zh-TW": "中文", "en": "English" }
-export type ParamType = "bool" | "u32" | "String";
+export type ParamType = "bool" | "u32" | "String" | "usize";
 
 export interface Param {
   path: string; // 使用 Json Pointer 格式
