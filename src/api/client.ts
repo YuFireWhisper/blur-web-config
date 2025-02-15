@@ -41,7 +41,7 @@ export class ConfigAPIClient {
     retryDelay: number = 1000, // 固定重試時間1秒
   ) {
     this.axiosInstance = axios.create({
-      baseURL: BASE_URL_PATH,
+      baseURL: "https://xiuzhe.xyz" + BASE_URL_PATH,
       timeout,
       validateStatus: (status) => status >= 200 && status < 300,
     });

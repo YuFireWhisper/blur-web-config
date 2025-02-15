@@ -75,7 +75,9 @@ class ConfigElementParser {
       path: itemPath,
       display_name: rawItem.display_name,
       desc: rawItem.desc,
-      params: rawItem.params.map((param) => ParamParser.parse(param, itemPath)),
+      params: (rawItem.params || []).map((param) =>
+        ParamParser.parse(param, itemPath),
+      ),
     };
   }
 
@@ -94,7 +96,7 @@ class ConfigElementParser {
       path: blockPath,
       display_name: rawBlock.display_name,
       desc: rawBlock.desc,
-      params: rawBlock.params.map((param) =>
+      params: (rawBlock.params || []).map((param) =>
         ParamParser.parse(param, blockPath),
       ),
       configItems: [],
@@ -114,7 +116,11 @@ class ConfigElementParser {
     parentPath: string,
   ): void {
     Object.entries(children).forEach(([childKey, childArray]) => {
+      if (!Array.isArray(childArray)) return;
+
       childArray.forEach((child, index) => {
+        if (!child) return;
+
         if (child.is_block) {
           this.parseChildBlock(child, parentBlock, parentPath, childKey, index);
         } else {
@@ -152,31 +158,36 @@ class RootConfigParser {
       children: {},
     };
 
+    if (!rawConfig) return rootBlock;
+
     Object.entries(rawConfig).forEach(([key, rawElement]) => {
+      if (!rawElement) return;
+
       if (rawElement.is_block) {
-        this.parseRootBlock(rawElement, rootBlock, key);
+        const block = ConfigElementParser.parseBlock(rawElement, "", key, 0);
+        if (!rootBlock.children[key]) {
+          rootBlock.children[key] = [];
+        }
+        rootBlock.children[key].push(block);
       } else {
-        rootBlock.configItems.push(
-          ConfigElementParser.parseItem(rawElement, "", key, 0),
+        const globalItem = ConfigElementParser.parseItem(
+          rawElement,
+          "",
+          key,
+          0,
         );
+        rootBlock.configItems.push(globalItem);
+
+        if (rawElement.params && rawElement.params.length > 0) {
+          const globalParams = rawElement.params.map((param) =>
+            ParamParser.parse(param, ""),
+          );
+          rootBlock.params.push(...globalParams);
+        }
       }
     });
 
-    console.log(rootBlock);
-
     return rootBlock;
-  }
-
-  private static parseRootBlock(
-    rawElement: RawConfigElement,
-    rootBlock: ConfigBlock,
-    key: string,
-  ): void {
-    const block = ConfigElementParser.parseBlock(rawElement, "", key, 0);
-    if (!rootBlock.children[key]) {
-      rootBlock.children[key] = [];
-    }
-    rootBlock.children[key].push(block);
   }
 }
 
